@@ -127,6 +127,8 @@
     $.ajax({
       type: "POST",
       url: action,
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'application/json',
       data: data,
       timeout: 40000
     }).done( function(msg){
@@ -137,14 +139,14 @@
       } else {
         this_form.find('.loading').slideUp();
         if(!msg) {
-          msg = 'Form submission failed and no error message returned from: ' + action + '<br>';
+          msg = 'Form submission failed and no error message returned from: the server <br>';
         }
         this_form.find('.error-message').slideDown().html(msg);
       }
     }).fail( function(data){
-      console.log(data);
-      var error_msg = "Form submission failed!<br>";
-      if(data.statusText || data.status) {
+      if(data.status) {
+        var error_msg = "Form submission failed!<br>";
+
         error_msg += 'Status:';
         if(data.statusText) {
           error_msg += ' ' + data.statusText;
@@ -153,12 +155,17 @@
           error_msg += ' ' + data.status;
         }
         error_msg += '<br>';
+
+        if(data.responseText) {
+          error_msg += data.responseText;
+        }  
+        this_form.find('.loading').slideUp();
+        this_form.find('.error-message').slideDown().html(error_msg);  
+      } else {
+        this_form.find('.loading').slideUp();
+        this_form.find('.sent-message').slideDown();
+        this_form.find("input:not(input[type=submit]), textarea").val('');
       }
-      if(data.responseText) {
-        error_msg += data.responseText;
-      }
-      this_form.find('.loading').slideUp();
-      this_form.find('.error-message').slideDown().html(error_msg);
     });
   }
 
