@@ -8,8 +8,7 @@
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "file:///Users/hnourallah/Desktop/trence-landing0/index.html",
-            "webRoot": "${workspaceFolder}"
+            "url": "${workspaceFolder}/index.html"        
         }
     ]
 }
